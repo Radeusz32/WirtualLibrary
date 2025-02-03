@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
-    /**
-     * Pobierz wszystkie recenzje.
-     */
     public function index()
     {
         $reviews = Review::with('book')->get();
@@ -18,7 +15,7 @@ class ReviewController extends Controller
         return response()->json($reviews->map(function ($review) {
             return [
                 'id' => $review->id,
-                'book_id' => $review->book_id ?? 0,  // 🔥 Upewniamy się, że `book_id` nie jest null
+                'book_id' => $review->book_id ?? 0, 
                 'book_title' => $review->book ? $review->book->title : "Nieznana książka",
                 'reviewed_by' => $review->reviewed_by,
                 'rating' => $review->rating,
@@ -27,9 +24,7 @@ class ReviewController extends Controller
         }));
     }
 
-    /**
-     * Dodaj nową recenzję.
-     */
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -44,11 +39,9 @@ class ReviewController extends Controller
         return response()->json($review, 201);
     }
 
-    /**
-     * Usuń recenzję (tylko autor może to zrobić).
-     */
+
     public function destroy(Request $request, $id)
-    {
+{
         $review = Review::find($id);
 
         if (!$review) {
@@ -65,6 +58,8 @@ class ReviewController extends Controller
 
         return response()->json(['message' => 'Recenzja została usunięta.']);
     }
+
+
     public function update(Request $request, $id)
 {
     $review = Review::findOrFail($id);

@@ -36,7 +36,7 @@ export default {
         return {
             books: [],
             selectedBookId: null,
-            user_name: '' // ✅ Przechowuje wpisane imię użytkownika
+            user_name: '' 
         };
     },
     created() {
@@ -61,7 +61,7 @@ export default {
         },
         addReviewToList(newReview) {
             console.log("🔄 Przekazanie nowej recenzji do ReviewList.vue:", newReview);
-            this.$refs.reviewList.addReviewToList(newReview); // 🔥 PRZEKAZUJEMY RECENZJĘ DO LISTY
+            this.$refs.reviewList.addReviewToList(newReview); 
         }
         
     }
@@ -76,7 +76,6 @@ export default {
     padding: 20px;
 }
 
-/* ✅ Stylizacja sekcji */
 .forms-container, .content-container {
     display: flex;
     justify-content: space-between;

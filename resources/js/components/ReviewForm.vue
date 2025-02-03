@@ -50,10 +50,10 @@ export default {
     },
     methods: {
         fetchBooks() {
-            console.log("🔍 book_id:", this.selectedBookId);
-console.log("🔍 reviewed_by:", this.user_name);
-console.log("🔍 rating:", this.rating);
-console.log("🔍 content:", this.content);
+            console.log("🔍 book_id:", this.selectedBookId); // Debugowanie
+            console.log("🔍 reviewed_by:", this.user_name); // Debugowanie
+            console.log("🔍 rating:", this.rating); // Debugowanie
+            console.log("🔍 content:", this.content); // Debugowanie
             axios.get(`/books`)
                 .then(response => {
                     this.books = response.data;
@@ -67,7 +67,7 @@ console.log("🔍 content:", this.content);
         },
         addReview() {
             if (!this.selectedBookId) {
-                alert("❗ Wybierz książkę do recenzji!");
+                alert("❗ Wybierz książkę do recenzji!"); // Debugowanie
                 return;
             }
 
@@ -77,14 +77,14 @@ console.log("🔍 content:", this.content);
                 rating: this.rating,
                 content: this.content
             };
-            console.log("📤 Wysyłanie recenzji:", reviewData);
+            console.log("📤 Wysyłanie recenzji:", reviewData); // Debugowanie
             axios.post(`/reviews`, reviewData)
                 .then(response => {
-                    console.log("✅ Recenzja dodana:", response.data);
+                    console.log("✅ Recenzja dodana:", response.data); // Debugowanie
                     this.$emit('reviewAdded', response.data);
                     this.resetForm();
                 })
-                .catch(error => console.error("❌ Błąd dodawania recenzji:", error.response));
+                .catch(error => console.error("❌ Błąd dodawania recenzji:", error.response)); // Debugowanie
         },
         resetForm() {
             this.user_name = '';

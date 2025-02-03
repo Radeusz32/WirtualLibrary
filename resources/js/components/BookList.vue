@@ -31,28 +31,17 @@
                     <button @click="cancelEdit(book)">❌ Anuluj</button>
                 </div>
 
-                <!-- 🔥 Tryb wyświetlania -->
+                
                 <div v-else>
                     <h3><strong>Tytuł:</strong> {{ book.title }}</h3>
+
                     <p>Autor: {{ book.author }} ({{ book.year }})</p>
                     <p><strong>Dodane przez:</strong> {{ book.added_by }}</p>
                     <p><strong>Opis:</strong> {{ book.description ? book.description : 'Brak opisu' }}</p>
 
-                    <!-- 🔥 Przycisk edycji -->
-                    <button 
-                        :disabled="!isAuthor(book)" 
-                        class="action-btn" 
-                        @click="editBook(book)">
-                        ✏️ Edytuj
-                    </button>
+                    <button :disabled="!isAuthor(book)" class="action-btn" @click="editBook(book)">✏️ Edytuj </button>
 
-                    <!-- 🔥 Przycisk usuwania -->
-                    <button 
-                        :disabled="!isAuthor(book)" 
-                        class="action-btn" 
-                        @click="deleteBook(book.id)">
-                        🗑 Usuń
-                    </button>
+                    <button :disabled="!isAuthor(book)" class="action-btn" @click="deleteBook(book.id)">🗑 Usuń </button>
                 </div>
             </li>
         </ul>
@@ -103,7 +92,7 @@ export default {
                         updatedDescription: book.description
                     }));
                 })
-                .catch(error => console.error("❌ Błąd podczas pobierania książek:", error));
+                .catch(error => console.error("❌ Błąd podczas pobierania książek:", error)); // Debugowanie
         },
         addNewBook(book) {
         console.log("📖 Dodano nową książkę:", book);
@@ -140,16 +129,16 @@ export default {
                 book.description = response.data.description;
                 book.isEditing = false;
             })
-            .catch(error => console.error("❌ Błąd edycji książki:", error));
+            .catch(error => console.error("❌ Błąd edycji książki:", error)); // Debugowanie
         },
         deleteBook(bookId) {
-            if (!confirm("❗ Czy na pewno chcesz usunąć tę książkę?")) return;
+            if (!confirm("❗ Czy na pewno chcesz usunąć tę książkę?")) return; 
 
             axios.delete(`/books/${bookId}`)
                 .then(() => {
                     this.books = this.books.filter(book => book.id !== bookId);
                 })
-                .catch(error => console.error("❌ Błąd usuwania książki:", error));
+                .catch(error => console.error("❌ Błąd usuwania książki:", error)); // Debugowanie
         }
     }
 };

@@ -1,7 +1,7 @@
 <template>
     <div class="review-list-container">
         <h2>📌 Lista recenzji</h2>
-        <!-- 🔥 Filtruj według książki -->
+        
         <select v-model="selectedBookId">
             <option value="">Wszystkie książki</option>
             <option v-for="book in books" :key="book.id" :value="book.id">
@@ -9,7 +9,7 @@
             </option>
         </select>
 
-        <!-- 🔥 Filtruj według oceny -->
+        
         <div class="filter-options">
             <label>Filtruj według oceny:</label>
             <button @click="fetchReviews">Odśwież listę recenzji</button>
@@ -24,7 +24,7 @@
                 <p><strong>Osoba:{{ review.reviewed_by }}</strong></p>
                 <p> {{ review.rating }} ⭐</p>
             
-                <!-- 🔥 Edycja recenzji -->
+                
                 <div v-if="review.isEditing">
                     <label>⭐ Zmień ocenę:</label>
                     <select v-model="review.updatedRating">
@@ -37,10 +37,10 @@
                 </div>
                 <p v-else>{{ review.content }}</p>
 
-                <!-- 🔥 Przycisk edycji -->
+                
                 <button :disabled="!isAuthor(review)" @click="editReview(review)" class="delete-btn">✏️ Edytuj</button>
 
-                <!-- 🔥 Przycisk usuwania -->
+                
                 <button :disabled="!isAuthor(review)" @click="deleteReview(review.id)" class="delete-btn">🗑 Usuń</button>
             </div>
         </div>
@@ -59,7 +59,7 @@ export default {
             reviews: [],
             books: [],
             selectedBookId: '',
-            selectedRating: '' // 🔥 Nowa zmienna do filtrowania po ocenie
+            selectedRating: '' 
         };
     },
     created() {
@@ -70,31 +70,31 @@ export default {
         filteredReviews() {
             return this.reviews
                 .filter(r => (this.selectedBookId ? r.book_id == this.selectedBookId : true))
-                .filter(r => (this.selectedRating ? r.rating == this.selectedRating : true)); // 🔥 Filtracja po ocenie
+                .filter(r => (this.selectedRating ? r.rating == this.selectedRating : true)); 
         }
     },
     methods: {
         fetchReviews() {
             axios.get(`/reviews`)
                 .then(response => {
-                    console.log("📥 Otrzymane recenzje:", response.data);
+                    console.log("📥 Otrzymane recenzje:", response.data); // Debugowanie
                     this.reviews = response.data.map(review => ({
                         ...review,
                         isEditing: false,
                         updatedContent: review.content,
-                        updatedRating: review.rating // ✅ Dodane do edycji gwiazdek
+                        updatedRating: review.rating 
                     }));
                 });
         },
         fetchBooks() {
             axios.get(`/books`).then(response => {
-                console.log("📚 Otrzymane książki:", response.data);
+                console.log("📚 Otrzymane książki:", response.data); // Debugowanie
                 this.books = response.data;
             });
         },
         addReviewToList(newReview) {
-        console.log("➕ Dodano nową recenzję:", newReview);
-        this.reviews.unshift(newReview); // Aktualizacja listy recenzji
+        console.log("➕ Dodano nową recenzję:", newReview); // Debugowanie
+        this.reviews.unshift(newReview); 
     },
 
         isAuthor(review) {
@@ -111,25 +111,25 @@ export default {
         saveReview(review) {
             axios.put(`/reviews/${review.id}?reviewed_by=${encodeURIComponent(this.user_name)}`, {
                 content: review.updatedContent,
-                rating: review.updatedRating // ✅ Aktualizowanie oceny gwiazdkowej
+                rating: review.updatedRating 
             })
             .then(response => {
                 console.log("✅ Recenzja zaktualizowana:", response.data);
                 review.content = response.data.review.content;
-                review.rating = response.data.review.rating; // ✅ Aktualizacja wyświetlanej oceny
+                review.rating = response.data.review.rating; 
                 review.isEditing = false;
             })
-            .catch(error => console.error("❌ Błąd edycji recenzji:", error.response));
+            .catch(error => console.error("❌ Błąd edycji recenzji:", error.response)); // Debugowanie
         },
         deleteReview(reviewId) {
-            if (!confirm("❗ Czy na pewno chcesz usunąć tę recenzję?")) return;
+            if (!confirm("❗ Czy na pewno chcesz usunąć tę recenzję?")) return; // Debugowanie
 
             axios.delete(`/reviews/${reviewId}?reviewed_by=${encodeURIComponent(this.user_name)}`)
                 .then(() => {
                     this.reviews = this.reviews.filter(r => r.id !== reviewId);
-                    console.log("🗑 Recenzja usunięta");
+                    console.log("🗑 Recenzja usunięta"); // Debugowanie
                 })
-                .catch(error => console.error("❌ Błąd usuwania recenzji:", error.response));
+                .catch(error => console.error("❌ Błąd usuwania recenzji:", error.response)); // Debugowanie
         }
     }
 };

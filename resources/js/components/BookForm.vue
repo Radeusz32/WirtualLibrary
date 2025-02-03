@@ -45,7 +45,7 @@ export default {
             description: ''
         };
     },
-    methods: { // 🟢 Teraz `methods` jest we właściwym miejscu
+    methods: { 
         addBook() {
             const bookData = {
                 added_by: this.user_name,
@@ -60,21 +60,21 @@ export default {
             axios.post('/books', bookData)
                 .then(response => {
                 
-                console.log("✅ Książka dodana:", response.data); // 🟢 Logowanie sukcesu
+                console.log("✅ Książka dodana:", response.data); // Debugowanie
                 if (!response.data.id) {
                         console.error("❌ Błąd: Brak `id` w odpowiedzi z serwera!");
                         return;
                 }
-                console.log("📢 Emitowanie zdarzenia `bookAdded`", response.data);
-                this.$emit('bookAdded', response.data); // 🟢 Emitowanie nowej książki
+                console.log("📢 Emitowanie zdarzenia `bookAdded`", response.data); // Debugowanie
+                this.$emit('bookAdded', response.data); 
                 this.resetForm();
                 })
                 .catch(error => {
-                    console.error("❌ Błąd podczas dodawania książki:", error.response);
+                    console.error("❌ Błąd podczas dodawania książki:", error.response); // Debugowanie
                 });
             },
         resetForm() {
-                this.user_name = ''; // Resetowanie pól
+                this.user_name = '';
                 this.title = '';
                 this.author = '';
                 this.year = '';
