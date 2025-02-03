@@ -1,84 +1,21 @@
-Zadanie 2 - Wirtualna biblioteka.
-Projekt oparłem na wariancie z frameworkami (Laravel + Vue.js).
-Wszystkie fukncjonalności zostały dodane.
+# Wirtutalna biblioteka
 
-INSTRUKCJA:
+## Cele projektu
+Projekt ma na celu umożliwienie użytkownikowi dodania książki oraz informacji dotyczących książki. 
+Ponadto użytkownik ma możliwość wystawienia recenzji do danej książki wraz z oceną oraz treścią recenzji.
+Dany użytkownik może edytować oraz usuwać dodane książki oraz recenzje.
+Projekt realizuje podstawe podstawowe operacje CRUD na bazie danych.
 
+### Technologie
+* JavaScript
+* PHP
+* Laravel
+* Vue.js
+
+## Opis projektu
 Użytkownik podczas dodawania ksiązki, bądź recenzji wprowadza swoje imie, które przekazywane jest do bazy danych.
 Użytkownik może edytować lub usuwać swoje książki/recenzje TYLKO jeśli wpisze swoje imie w pole "logowania" na górze strony. 
-Niestety nie zadziałało mi dynamiczne odświeżanie w panelu recenzji, dlatego są dodane przyciski do debuggowania.
-Dzięki temu dane jeszcze raz się pobiorą bez konieczności odświeżania strony.
-Dodawanie książek, recenzji do list działa dynamicznie.
-
-# Project Name
-
-example image:
-
-
-![alternative text](reports/img/pic01.jpg)
-
-
-#### -- Project Status: [Active, On-Hold, Completed]
-
-## Project Intro/Objective
-The purpose of this project is ________. (Describe the main goals of the project. Limit to a short paragraph, 3-6 Sentences)
-
-### Partner
-* [Name of Partner organization/Government department etc..]
-* Website for partner
-* Partner contact: [Name of Contact]
-* If you do not have a partner leave this section out
-
-### Methods Used
-* Inferential Statistics
-* Machine Learning
-* Data Visualization
-* Predictive Modeling
-* etc.
-
-### Technologies
-* R
-* Python
-* D3
-* PostGres, MySql
-* Pandas, jupyter
-* HTML
-* JavaScript
-* etc.
-
-## Project Description
-(Provide more detailed overview of the project.
-Talk a bit about your data sources and what questions and hypothesis you are exploring.
-What specific data analysis/visualization and modelling work are you using to solve the
-problem? What blockers and challenges are you facing?
-Feel free to number or bullet point things here)
-
-## Getting Started
-
-1. Clone this repo (for help see this [tutorial](https://help.github.com/articles/cloning-a-repository/)).
-2. Raw Data is being kept [here](Repo folder containing raw data) within this repo.
-
-    *If using offline data mention that and how they may obtain the data from the froup)*
-
-3. Data processing/transformation scripts are being kept [here](Repo folder containing data processing scripts/notebooks)
-4. etc...
-
-*If your project is well underway and setup is fairly complicated (ie. requires installation of many packages)
-create another "setup.md" file and link to it here*
-
-5. Follow setup [instructions](Link to file)
-
-## Featured Notebooks/Analysis/Deliverables
-* [Notebook/Markdown/Slide Deck Title](link)
-* [Notebook/Markdown/Slide DeckTitle](link)
-* [Blog Post](link)
-
-
-## Contributing Members
-
-**Team Leads (Contacts) : [Full Name](https://github.com/[github handle])**
-
-#### Other Members:
-
- - [Full Name](https://github.com/[github handle])
- - [Full Name](https://github.com/[github handle])
+Dodane książki, lub recenzje na bieżąco są zapisywane do bazy danych.
+Po wykonaniu akcji "Dodaj ksiażkę" lista książek jest aktualizowana na podstawie zawartości bazy danych.
+Projekt posiada kilka wad t.j brak dynamicznego odświeżania zawartości kontrolki combo-box w panelu lista recenzji po dodaniu książki, oraz brak dynamicznego odświeżania tytułu książki w panelu listy recenzji po dodaniu recenzji.
+Z uwagi na błędy popełnione podczas projektowania architektury projektu, opisane problemy zostały tymczasowo rozwiązane poprzez dodanie przycisków odświeżania wspomnianych komponentów.
