@@ -8,7 +8,7 @@
     
             <div class="forms-container">
                 <BookForm @bookAdded="handleNewBook"  />
-                <ReviewForm 
+                <ReviewForm ref="reviwf"
                     :bookId="selectedBookId"
                     :user_name="user_name"
                     :books="books" 
@@ -18,7 +18,7 @@
 
             
             <div class="content-container">
-                <BookList ref="bookList" :user_name="user_name" />
+                <BookList ref="bookList" :user_name="user_name" @booksUpdated="updateBooks" />
                 <ReviewList ref="reviewList" :user_name="user_name" />
             </div>
         </div>
@@ -43,6 +43,11 @@ export default {
     this.fetchBooks();
   },
     methods: {
+        updateBooks(books) {
+        
+        this.$refs.reviwf.books = books;
+        
+    },
         fetchBooks() {
       axios.get('/books')
         .then(response => {
@@ -55,13 +60,21 @@ export default {
             if (this.$refs.bookList) {
                 console.log("📝 Dodawanie książki do listy w BookList.vue");
                 this.$refs.bookList.addNewBook(book);
+                // if (this.$refs.reviwf)
+                //     this.$refs.reviwf.fetchBooks();
+            
+            
+
             } else { 
                 console.error("❌ `bookList` nie jest poprawnie zainicjalizowane!");
             }
         },
         addReviewToList(newReview) {
+            
             console.log("🔄 Przekazanie nowej recenzji do ReviewList.vue:", newReview);
-            this.$refs.reviewList.addReviewToList(newReview); 
+            this.$refs.reviewList.addReviewToList(newReview);
+            // if (this.$refs.reviewList)
+                    // this.$refs.reviewList.fetchReviews();
         }
         
     }
@@ -72,13 +85,13 @@ export default {
 .app-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     padding: 20px;
 }
 
 .forms-container, .content-container {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     width: 100%;
     padding: 10px;
     border: 2px solid #ccc;

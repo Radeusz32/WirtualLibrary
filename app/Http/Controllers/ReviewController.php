@@ -25,20 +25,27 @@ class ReviewController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'book_id' => 'required|exists:books,id',
-            'reviewed_by' => 'required|string|max:255',
-            'rating' => 'required|integer|min:1|max:5',
-            'content' => 'required|string',
-        ]);
+public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'book_id' => 'required|exists:books,id',
+        'reviewed_by' => 'required|string|max:255',
+        'rating' => 'required|integer|min:1|max:5',
+        'content' => 'required|string',
+    ]);
 
-        $review = Review::create($validatedData);
+    $review = Review::create($validatedData);
+    $review->load('book'); // 🔥 Pobieramy informacje o książce
 
-        return response()->json($review, 201);
-    }
-
+    return response()->json([
+        'id' => $review->id,
+        'book_id' => $review->book_id,
+        'book_title' => $review->book ? $review->book->title : "Nieznana książka", // 📚 Dodajemy tytuł książki!
+        'reviewed_by' => $review->reviewed_by,
+        'rating' => $review->rating,
+        'content' => $review->content
+    ], 201);
+}
 
     public function destroy(Request $request, $id)
 {

@@ -27,7 +27,8 @@
                 <textarea v-model="description" placeholder="Dodaj krótki opis książki"></textarea>
             </div>
 
-            <button type="submit">➕ Dodaj książkę</button>
+            <button type="submit" >➕ Dodaj książkę</button>
+
         </form>
     </div>
 </template>
@@ -88,7 +89,7 @@ export default {
 .book-form-container {
     width: 100%;
     
-    margin: auto;
+    /* margin: auto; */
     padding: 20px;
     border: 2px solid #ccc;
     border-radius: 8px;

@@ -12,7 +12,7 @@
         
         <div class="filter-options">
             <label>Filtruj według oceny:</label>
-            <button @click="fetchReviews">Odśwież listę recenzji</button>
+            
             <select v-model="selectedRating">
                 <option value="">Wszystkie</option>
                 <option v-for="star in 5" :key="star" :value="star">{{ star }} ⭐</option>
@@ -138,13 +138,13 @@ export default {
 <style scoped>
 .review-list-container {
     width: 50%;
-    margin: auto;
+    align-self: top;
+    /* margin: 0 auto; */
 }
 
 .filter-options {
     margin-top: 10px;
     display: flex;
-    align-items: center;
     gap: 10px;
 }
 

@@ -6,27 +6,32 @@
             <div class="input-group">
                 <label>📖 Wybierz książkę:</label>
         
-                <select v-model="selectedBookId" required>
+                <select v-model="selectedBookId" required > 
+                     <!-- @focus="fetchBooks" -->
                     <option v-for="book in books" :key="book.id" :value="book.id">
                         {{ book.title }} (ID: {{ book.id }})
                     </option>
                 </select>
+            </div>
 
-                <button @click="fetchBooks">Odśwież listę książek</button>
-
+                
+            <div class="input-group">
                 <label>👤 Twoje Imię:</label>
                 <input v-model="user_name" placeholder="Twoje Imię" required />
-
+            </div>
+            <div class="input-group">
                 <label>⭐ Ocena:</label>
                 <select v-model="rating" required>
                     <option v-for="star in 5" :key="star" :value="star">{{ star }} ⭐</option>
                 </select>
-
+            </div>
+            <div class="input-group">
                 <label>✍️ Treść recenzji:</label>
                 <textarea v-model="content" placeholder="Treść recenzji" required></textarea>
 
                 <button type="submit" class="action-button">➕ Dodaj recenzję</button>
             </div>
+            
         </form>
     </div>
 </template>
@@ -98,7 +103,7 @@ export default {
 <style scoped>
 .review-form-container {
     width: 100%;
-    margin: auto;
+    /* margin: auto; */
     padding: 20px;
     border: 2px solid #ccc;
     border-radius: 8px;
@@ -124,7 +129,7 @@ label {
     color: #555;
 }
 
-input, textarea {
+input, textarea, select {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -135,6 +140,7 @@ input, textarea {
 textarea {
     resize: vertical;
     min-height: 80px;
+    margin-bottom: 5px;
 }
 
 .action-button {

@@ -34,7 +34,6 @@
                 
                 <div v-else>
                     <h3><strong>Tytuł:</strong> {{ book.title }}</h3>
-
                     <p>Autor: {{ book.author }} ({{ book.year }})</p>
                     <p><strong>Dodane przez:</strong> {{ book.added_by }}</p>
                     <p><strong>Opis:</strong> {{ book.description ? book.description : 'Brak opisu' }}</p>
@@ -98,6 +97,8 @@ export default {
         console.log("📖 Dodano nową książkę:", book);
         if (!this.books.find(b => b.id === book.id)) {
             this.books.push(book);
+            this.$emit('booksUpdated', this.books);
+            
         }
     },
         toggleSortDirection() {
