@@ -12,7 +12,7 @@
             </select>
 
             <button @click="toggleSortDirection">
-                {{ sortDirection === 'asc' ? '⬆️ Rosnąco' : '⬇️ Malejąco' }}
+                {{ sortDirection === "asc" ? "⬆️ Rosnąco" : "⬇️ Malejąco" }}
             </button>
         </div>
 
@@ -22,25 +22,52 @@
 
                 <!-- 🔥 Tryb edycji -->
                 <div v-if="book.isEditing">
-                    Tytuł:<input v-model="book.updatedTitle" placeholder="Nowy tytuł" />
-                    Autor:<input v-model="book.updatedAuthor" placeholder="Nowy autor" />
-                    Rok:<input v-model="book.updatedYear" type="number" placeholder="Nowy rok wydania" />
-                    Opis:<textarea v-model="book.updatedDescription" placeholder="Nowy opis"></textarea>
-                    
+                    Tytuł:<input
+                        v-model="book.updatedTitle"
+                        placeholder="Nowy tytuł"
+                    />
+                    Autor:<input
+                        v-model="book.updatedAuthor"
+                        placeholder="Nowy autor"
+                    />
+                    Rok:<input
+                        v-model="book.updatedYear"
+                        type="number"
+                        placeholder="Nowy rok wydania"
+                    />
+                    Opis:<textarea
+                        v-model="book.updatedDescription"
+                        placeholder="Nowy opis"
+                    ></textarea>
+
                     <button @click="saveBook(book)">💾 Zapisz</button>
                     <button @click="cancelEdit(book)">❌ Anuluj</button>
                 </div>
 
-                
                 <div v-else>
                     <h3><strong>Tytuł:</strong> {{ book.title }}</h3>
                     <p>Autor: {{ book.author }} ({{ book.year }})</p>
                     <p><strong>Dodane przez:</strong> {{ book.added_by }}</p>
-                    <p><strong>Opis:</strong> {{ book.description ? book.description : 'Brak opisu' }}</p>
+                    <p>
+                        <strong>Opis:</strong>
+                        {{ book.description ? book.description : "Brak opisu" }}
+                    </p>
 
-                    <button :disabled="!isAuthor(book)" class="action-btn" @click="editBook(book)">✏️ Edytuj </button>
+                    <button
+                        :disabled="!isAuthor(book)"
+                        class="action-btn"
+                        @click="editBook(book)"
+                    >
+                        ✏️ Edytuj
+                    </button>
 
-                    <button :disabled="!isAuthor(book)" class="action-btn" @click="deleteBook(book.id)">🗑 Usuń </button>
+                    <button
+                        :disabled="!isAuthor(book)"
+                        class="action-btn"
+                        @click="deleteBook(book.id)"
+                    >
+                        🗑 Usuń
+                    </button>
                 </div>
             </li>
         </ul>
@@ -48,65 +75,68 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
     props: {
-        user_name: String // ✅ Przekazywane imię użytkownika
+        user_name: String, // ✅ Przekazywane imię użytkownika
     },
     data() {
         return {
             books: [],
-            sortBy: 'title',
-            sortDirection: 'asc',
+            sortBy: "title",
+            sortDirection: "asc",
         };
     },
     computed: {
         sortedBooks() {
             return [...this.books].sort((a, b) => {
-                let modifier = this.sortDirection === 'asc' ? 1 : -1;
+                let modifier = this.sortDirection === "asc" ? 1 : -1;
                 let valueA = a[this.sortBy];
                 let valueB = b[this.sortBy];
 
-                if (typeof valueA === 'string' && typeof valueB === 'string') {
+                if (typeof valueA === "string" && typeof valueB === "string") {
                     return valueA.localeCompare(valueB) * modifier;
                 }
                 return (valueA - valueB) * modifier;
             });
-        }
+        },
     },
     created() {
         this.fetchBooks();
     },
     methods: {
         fetchBooks() {
-            axios.get(`/books`)
-                .then(response => {
-                    this.books = response.data.map(book => ({
+            axios
+                .get(`/books`)
+                .then((response) => {
+                    this.books = response.data.map((book) => ({
                         ...book,
                         isEditing: false,
                         updatedTitle: book.title,
                         updatedAuthor: book.author,
                         updatedYear: book.year,
-                        updatedDescription: book.description
+                        updatedDescription: book.description,
                     }));
                 })
-                .catch(error => console.error("❌ Błąd podczas pobierania książek:", error)); // Debugowanie
+                .catch((error) =>
+                    console.error("❌ Błąd podczas pobierania książek:", error)
+                ); // Debugowanie
         },
         addNewBook(book) {
-        console.log("📖 Dodano nową książkę:", book);
-        if (!this.books.find(b => b.id === book.id)) {
-            this.books.push(book);
-            this.$emit('booksUpdated', this.books);
-            
-        }
-    },
+            console.log("📖 Dodano nową książkę:", book);
+            if (!this.books.find((b) => b.id === book.id)) {
+                this.books.push(book);
+                this.$emit("booksUpdated", this.books);
+            }
+        },
         toggleSortDirection() {
-            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+            this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
         },
         isAuthor(book) {
-            return book.added_by && this.user_name 
-                ? book.added_by.trim().toLowerCase() === this.user_name.trim().toLowerCase()
+            return book.added_by && this.user_name
+                ? book.added_by.trim().toLowerCase() ===
+                      this.user_name.trim().toLowerCase()
                 : false;
         },
         editBook(book) {
@@ -116,32 +146,44 @@ export default {
             book.isEditing = false;
         },
         saveBook(book) {
-            axios.put(`/books/${book.id}`, {
-                title: book.updatedTitle,
-                author: book.updatedAuthor,
-                year: book.updatedYear,
-                description: book.updatedDescription,
-                user_name: this.user_name
-            })
-            .then(response => {
-                book.title = response.data.title;
-                book.author = response.data.author;
-                book.year = response.data.year;
-                book.description = response.data.description;
-                book.isEditing = false;
-            })
-            .catch(error => console.error("❌ Błąd edycji książki:", error)); // Debugowanie
+            axios
+                .put(`/books/${book.id}`, {
+                    title: book.updatedTitle,
+                    author: book.updatedAuthor,
+                    year: book.updatedYear,
+                    description: book.updatedDescription,
+                    user_name: this.user_name,
+                })
+                .then((response) => {
+                    book.title = response.data.title;
+                    book.author = response.data.author;
+                    book.year = response.data.year;
+                    book.description = response.data.description;
+                    book.isEditing = false;
+                })
+                .catch((error) =>
+                    console.error("❌ Błąd edycji książki:", error)
+                ); // Debugowanie
         },
         deleteBook(bookId) {
-            if (!confirm("❗ Czy na pewno chcesz usunąć tę książkę?")) return; 
+            if (!confirm("❗ Czy na pewno chcesz usunąć tę książkę?")) return;
 
-            axios.delete(`/books/${bookId}`)
+            axios
+                .delete(
+                    `/books/${bookId}?added_by=${encodeURIComponent(
+                        this.user_name
+                    )}`
+                )
                 .then(() => {
-                    this.books = this.books.filter(book => book.id !== bookId);
+                    this.books = this.books.filter(
+                        (book) => book.id !== bookId
+                    );
                 })
-                .catch(error => console.error("❌ Błąd usuwania książki:", error)); // Debugowanie
-        }
-    }
+                .catch((error) =>
+                    console.error("❌ Błąd usuwania książki:", error)
+                ); // Debugowanie
+        },
+    },
 };
 </script>
 
@@ -186,7 +228,8 @@ ul {
     background-color: #ccc;
 }
 
-input, textarea {
+input,
+textarea {
     width: 100%;
     padding: 8px;
     margin-top: 5px;

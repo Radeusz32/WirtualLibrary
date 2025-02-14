@@ -57,7 +57,7 @@ public function store(Request $request)
 
         $userName = $request->query('reviewed_by');
 
-        if (!$userName || $review->reviewed_by !== $userName) {
+        if (!$userName || strcasecmp($review->reviewed_by, $userName) !== 0) {
             return response()->json(['error' => 'Brak uprawnień do usunięcia recenzji.'], 403);
         }
 
