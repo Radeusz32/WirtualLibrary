@@ -47,26 +47,24 @@ public function store(Request $request)
     ], 201);
 }
 
-public function destroy($id, Request $request)
+    public function destroy(Request $request, $id)
 {
-    $book = Book::find($id);
-    if (!$book) {
-        return response()->json(['message' => 'Książka nie została znaleziona'], 404);
+        $review = Review::find($id);
+
+        if (!$review) {
+            return response()->json(['error' => 'Recenzja nie została znaleziona'], 404);
+        }
+
+        $userName = $request->query('reviewed_by');
+
+        if (!$userName || strcasecmp($review->reviewed_by, $userName) !== 0) {
+            return response()->json(['error' => 'Brak uprawnień do usunięcia recenzji.'], 403);
+        }
+
+        $review->delete();
+
+        return response()->json(['message' => 'Recenzja została usunięta.']);
     }
-
-    // Pobranie użytkownika z requesta
-    $userName = $request->query('added_by');
-
-    // Sprawdzenie, czy użytkownik ma uprawnienia do usunięcia książki (ignorując wielkość liter)
-    if (!$userName || strcasecmp($book->added_by, $userName) !== 0) {
-        return response()->json(['error' => 'Brak uprawnień do usunięcia książki.'], 403);
-    }
-
-    // Usunięcie książki
-    $book->delete();
-    return response()->json(['message' => 'Książka usunięta pomyślnie']);
-}
-
 
 
     public function update(Request $request, $id)
